@@ -47,16 +47,16 @@ cores:  for i in 0 to num_PE-1 generate
 				data_to_up   => data_to_up(i)
 				);
 				
-				connections_cent : if NOT( i= 0 or i=(num_PE-1)) generate	
+				connections_cent1 : if i/=0 and i/=(num_PE-1)  generate	
 					data_from_l(i) <= data_to_r(i-1) ;
-					data_from_r(i-1) <= data_to_l(i);
-					we_from_r(i-1)   <= we_to_l(i)	;
-				end generate connections_cent;						
+					data_from_r(i) <= data_to_l(i+1);
+					we_from_r(i)   <= we_to_l(i+1)	;
+				end generate connections_cent1;									
 						
 				left_borderline : if i= 0 generate
 					data_from_l(i) <= (others => '0');
-					data_from_r(i) <= data_to_l(i);
-					we_from_r(i)   <= we_to_l(i)	;
+					data_from_r(i) <= data_to_l(i+1);
+					we_from_r(i)   <= we_to_l(i+1)	;
 				end generate left_borderline;
 				
 				right_borderline : if i=(num_PE-1) generate	
@@ -65,4 +65,5 @@ cores:  for i in 0 to num_PE-1 generate
 					we_from_r(i)   <= '0';
 				end generate right_borderline;	
 end generate cores;
+
 end Behavioral;
