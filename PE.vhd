@@ -41,26 +41,26 @@ begin
 		we_to_l <= '0';
 		cycles_counter <= 0;
 		state <= '0';		
+		done <= '0';
 	elsif rising_edge(clk) then	
-		we_out <= we_in;
-		data_out  <= data_in;
-		if unsigned(address_in) /= 0 then
-			address_out <= std_logic_vector(signed(address_in)-1); 
-		else 
-			address_out <= (others => '0');
-		end if;
-	  
-        if we_in ='1' then
+		if we_in ='1' and start = '0' then
+			we_out <= we_in;
+			data_out  <= data_in;
+			if unsigned(address_in) /= 0 then
+				address_out <= std_logic_vector(signed(address_in)-1); 
+			else 
+				address_out <= (others => '0');
+				data_out	<= my_data;
+			end if;
         	if unsigned(address_in) = 1 then 
-	    		my_data <= data_from_l;
+	    		my_data <= data_in;
 	    		cycles_counter <= 0;
 	    	end if;
+	    	
 	    --Starting the algo	
-	    elsif start = '1' then 
+	    elsif we_in ='0' and start = '1' then 
 	    if  (cycles_counter = algo_length) then
 	    	done <= '1'; -- End of the algorithms
-	    else
-	    	done <= '0';
 	    end if;	
 	    cycles_counter <= cycles_counter+1;	
 		if state = '0' then

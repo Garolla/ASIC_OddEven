@@ -3,7 +3,6 @@ use ieee.std_logic_1164.all;
 --use ieee.numeric_std.all;
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
-use ieee.math_real.all;
 use work.CONSTANTS.all;
 use std.textio.all;
 use ieee.std_logic_textio.all;

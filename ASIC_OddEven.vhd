@@ -62,9 +62,9 @@ cores:  for i in 0 to num_PE-1 generate
 					data_from_r(i) <= data_to_l(i+1);
 					we_from_r(i)   <= we_to_l(i+1)	;
 					
-					we_out_int(i-1)   <= we_in_int(i)	;
-					data_out_int(i-1)<= data_in_int(i);
-					address_out_int(i-1)<= address_in_int(i); 
+					we_in_int(i) <= we_out_int(i-1) ;
+					data_in_int(i) <= data_out_int(i-1);
+					address_in_int(i) <= address_out_int(i-1); 
 				end generate connections_cent1;									
 						
 				left_borderline : if i= 0 generate
@@ -82,7 +82,7 @@ cores:  for i in 0 to num_PE-1 generate
 					data_from_r(i) <= (others => '0');
 					we_from_r(i)   <= '0';
 					
-					data_out       <= data_to_r(i) ;
+					data_out       <= data_out_int(i) ;
 					address_out    <= address_out_int(i); 
 				end generate right_borderline;	
 end generate cores;
