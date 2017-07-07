@@ -38,25 +38,9 @@ begin
 	wait for clk_period; 	
 	rst				<= '0';
 	wait for clk_period; 
-	
-	ctrl(0) <= "1001"; --to all pillars of the first 9x9 block
-	request_in(0) <= DATA_WRALL &"0000"& NODEST & conv_std_logic_vector(11, DATA_length);
-	wait for clk_period; 
-	ctrl(0) <= "1001"; --to all pillars of the first 9x9 block
-	request_in(0) <= DATAPASS   &"0001"& SOU_EAST & conv_std_logic_vector(666, DATA_length);
-	wait for clk_period; 
-	-----------------------------------------------
-	ctrl(0) <= "1001"; --to all pillars of the first 9x9 block
-	request_in(0) <= INST_WRALL &"0000"& NODEST   &"0"&"0000"&"0000"& WRITE_A & LR &"0001"&  NODEST;			
-	wait for clk_period;
-	ctrl(0) <= "0111"; --to only pillar 7
-	request_in(0) <= INSTPASS   &"0001"& SOU_EAST &"0"&"0000"&"0000"& READ_A  & TTW &"0000"& WEST;	
-	wait for clk_period;
-	ctrl <= (others => "1001") ;                 
-	request_in <= (others => INST_WRALL &"1111"& NODEST &"1"&"0000"&"1111"& NOP     & NOTAG &"0000"& NODEST);	
-	wait for clk_period; 	
-	ctrl <= (others => "1001") ;    
-	request_in <= (others => (others => '0'));
+	we_from_up <= (others => '1');
+	data_from_up(0) <= conv_std_logic_vector(11, data_length));
+	data_from_up(1) <= conv_std_logic_vector(90, data_length));
 	wait for 2*clk_period;
 	start	<= '1';
 	wait;
