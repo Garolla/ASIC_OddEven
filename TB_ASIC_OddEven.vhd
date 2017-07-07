@@ -14,13 +14,13 @@ architecture TEST of TB_ASIC_OddEven is
 	-- Clock period definitions
     constant clk_period : time := 10 ns;
 	
-	clk          : std_logic:='0';
-    rst 		 : std_logic:='0';
-    start   	 : std_logic:='0';
-    done		 : std_logic;
-    data_to_up   : grid_data;
-    data_from_up : grid_data:=(others => (others => '0'));
-    we_from_up   : std_logic_vector(num_PE-1 downto 0):=(others => '0');
+	signal clk          : std_logic:='0';
+    signal rst 		    : std_logic:='0';
+    signal start   	    : std_logic:='0';
+    signal done		    : std_logic;
+    signal data_to_up   : grid_data;
+    signal data_from_up : grid_data:=(others => (others => '0'));
+    signal we_from_up   : std_logic_vector(num_PE-1 downto 0):=(others => '0');
 
 	begin
 		
@@ -39,10 +39,19 @@ begin
 	rst				<= '0';
 	wait for clk_period; 
 	we_from_up <= (others => '1');
-	data_from_up(0) <= conv_std_logic_vector(11, data_length));
-	data_from_up(1) <= conv_std_logic_vector(90, data_length));
-	wait for 2*clk_period;
+	data_from_up(0) <= conv_std_logic_vector(90, data_length);
+	data_from_up(1) <= conv_std_logic_vector(11, data_length);
+	wait for clk_period;
+	we_from_up <= (others => '0');
+	wait for clk_period;
 	start	<= '1';
+--	wait for clk_period; 
+--	we_from_up <= (others => '1');
+--	data_from_up(0) <= conv_std_logic_vector(55, data_length);
+--	data_from_up(1) <= conv_std_logic_vector(33, data_length);
+--	wait for clk_period;
+--	we_from_up <= (others => '0');
+--	wait for clk_period;
 	wait;
 end process;
 
