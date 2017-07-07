@@ -49,16 +49,16 @@ begin
 	    	cycles_counter <= 0;
 	    --Starting the algo	
 	    elsif start = '1' then 
-	    	cycles_counter <= cycles_counter+1;
 	    if  (cycles_counter = num_PE) then
 	    	done <= '1'; -- End of the algorithms
 	    else
 	    	done <= '0';
 	    end if;	
+	    cycles_counter <= cycles_counter+1;	
 		if parity = 0 then
 			if wait_even = '0' then
 				-- if left is bigger than me => swap
-				if  (to_integer(signed(data_from_l)) > to_integer(signed(my_data))) then
+				if  (to_integer(unsigned(data_from_l)) > to_integer(unsigned(my_data))) then
 					my_data <= data_from_l;
 					data_to_l <= my_data;
 					we_to_l <= '1';
@@ -74,8 +74,8 @@ begin
 					my_data <= data_from_r;
 				end if;
 				data_to_r <= my_data;
-				data_to_l <= (others => '0');
-				we_to_l <= '0';
+				--data_to_l <= (others => '0');
+				--we_to_l <= '0';
 				wait_even <= '0';
 			end if;	
 				
@@ -90,7 +90,7 @@ begin
 				wait_odd <= '1';				
 			elsif wait_odd = '1' then
 				-- if left is bigger than me => swap
-				if  (to_integer(signed(data_from_l)) > to_integer(signed(my_data))) then
+				if  (to_integer(unsigned(data_from_l)) > to_integer(unsigned(my_data))) then
 					my_data <= data_from_l;
 					data_to_l <= my_data;
 					we_to_l <= '1';
