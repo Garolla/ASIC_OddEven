@@ -12,9 +12,9 @@ Port (
 			done		 : out std_logic;
 			data_to_up   : out  grid_data;
 			data_from_up : in  grid_data;
-			we_from_up   : std_logic_vector(num_PE-1 downto 0)
+			we_from_up   : in std_logic_vector(num_PE-1 downto 0)
 );
-end ASIC-OddEven;
+end ASIC_OddEven;
 
 architecture Behavioral of ASIC_OddEven is
 signal data_to_l   : grid_data;
@@ -26,7 +26,7 @@ begin
 
 done <= and_reduce(done_int);
 
-cores:  for i in 0 to cols_BL-1 generate
+cores:  for i in 0 to num_PE-1 generate
 		pe_i:entity work.PE
 			generic map (i mod 2)
 			Port map(
@@ -41,7 +41,6 @@ cores:  for i in 0 to cols_BL-1 generate
 				we_from_up	 => we_from_up(i),
 				data_from_up => data_from_up(i),
 				data_to_up   => data_to_up(i)
-				)
-	 );
-end generate;
+				);
+end generate cores;
 end Behavioral;
