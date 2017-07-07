@@ -10,9 +10,12 @@ Port (
 			rst 		 : in std_logic;
 			start   	 : in std_logic;
 			done		 : out std_logic;
-			data_to_up   : out  grid_data;
-			data_from_up : in  grid_data;
-			we_from_up   : in std_logic_vector(num_PE-1 downto 0)
+			address_in	 : in std_logic_vector(address_length-1 downto 0 );
+			address_out	 : out std_logic_vector(address_length-1 downto 0 );
+			data_to_up   : out std_logic_vector(data_length-1 downto 0);
+			data_from_up : in std_logic_vector(data_length-1 downto 0);
+			we_from_up   : in std_logic;
+			we_to_up     : out std_logic
 );
 end ASIC_OddEven;
 
@@ -30,7 +33,6 @@ done <= and_reduce(done_int);
 
 cores:  for i in 0 to num_PE-1 generate
 		pe_i:entity work.PE
-			generic map ( 0 )--i mod 2)
 			Port map(
 				clk			 => clk,
 				rst			 => rst,
@@ -42,9 +44,12 @@ cores:  for i in 0 to num_PE-1 generate
 				data_to_r	 => data_to_r(i),
 				we_from_r	 => we_from_r(i),
 				data_from_r  => data_from_r(i),
-				we_from_up	 => we_from_up(i),
-				data_from_up => data_from_up(i),
-				data_to_up   => data_to_up(i)
+				we_from_up	 => we_from_up,
+				we_to_up	 => we_to_up,
+				address_in	 => address_in,
+				address_out	 => address_out,
+				data_from_up => data_from_up,
+				data_to_up   => data_to_up
 				);
 				
 				connections_cent1 : if i/=0 and i/=(num_PE-1)  generate	
