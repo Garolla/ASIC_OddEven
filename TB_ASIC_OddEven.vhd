@@ -41,6 +41,8 @@ begin
 	we_from_up <= (others => '1');
 	data_from_up(0) <= conv_std_logic_vector(90, data_length);
 	data_from_up(1) <= conv_std_logic_vector(11, data_length);
+	data_from_up(2) <= conv_std_logic_vector(33, data_length);
+	data_from_up(3) <= conv_std_logic_vector(77, data_length);	
 	wait for clk_period;
 	we_from_up <= (others => '0');
 	wait for clk_period;

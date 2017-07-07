@@ -26,13 +26,12 @@ end PE;
 architecture Behavioral of PE is
 signal my_data: std_logic_vector(data_length-1 downto 0);
 signal wait_even: std_logic := '0';
-signal wait_odd: std_logic := '0';
+signal wait_odd: std_logic := '1';
 signal cycles_counter: integer range 0 to num_PE;
 
 begin
 
 data_to_up <= my_data;
-done <= '1' when (cycles_counter = num_PE) else '0'; -- End of the algorithm		
 
 process(clk, rst, we_from_up, we_from_r)
 begin
@@ -43,14 +42,19 @@ begin
 		we_to_l <= '0';
 		cycles_counter <= 0;
 		wait_even <= '0';
-		wait_odd  <= '0';			
+		wait_odd  <= '1';			
 	elsif rising_edge(clk) then				
         if we_from_up ='1' then
 	    	my_data <= data_from_up;
 	    	cycles_counter <= 0;
 	    --Starting the algo	
 	    elsif start = '1' then 
-	    cycles_counter <= cycles_counter+1;
+	    	cycles_counter <= cycles_counter+1;
+	    if  (cycles_counter = num_PE) then
+	    	done <= '1'; -- End of the algorithms
+	    else
+	    	done <= '0';
+	    end if;	
 		if parity = 0 then
 			if wait_even = '0' then
 				-- if left is bigger than me => swap
@@ -97,8 +101,8 @@ begin
 				end if;
 				wait_odd <= '0';
 			end if;	
-			end if;
-			end if;
+		end if;
+	end if;
 	end if;
 end process;
 end Behavioral;
