@@ -51,7 +51,7 @@ begin
 		end if;
 	
         if we_from_up ='1' then
-        	if unsigned(address_in) = 0 then 
+        	if unsigned(address_in) = 1 then 
 	    		my_data <= data_from_up;
 	    		cycles_counter <= 0;
 	    	end if;

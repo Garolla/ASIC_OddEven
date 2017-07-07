@@ -12,20 +12,25 @@ Port (
 			done		 : out std_logic;
 			address_in	 : in std_logic_vector(address_length-1 downto 0 );
 			address_out	 : out std_logic_vector(address_length-1 downto 0 );
-			data_to_up   : out std_logic_vector(data_length-1 downto 0);
-			data_from_up : in std_logic_vector(data_length-1 downto 0);
-			we_from_up   : in std_logic;
-			we_to_up     : out std_logic
+			data_in      : out std_logic_vector(data_length-1 downto 0);
+			data_out     : in std_logic_vector(data_length-1 downto 0);
+			we_in	     : in std_logic
 );
 end ASIC_OddEven;
 
 architecture Behavioral of ASIC_OddEven is
-signal data_to_l   : grid_data;
-signal we_to_l     : std_logic_vector(num_PE-1 downto 0);
-signal data_from_l : grid_data;
-signal data_to_r   : grid_data;
-signal data_from_r : grid_data;
-signal we_from_r   : std_logic_vector(num_PE-1 downto 0);
+signal data_to_l       : grid_data;
+signal we_to_l         : std_logic_vector(num_PE-1 downto 0);
+signal data_from_l     : grid_data;
+signal data_to_r       : grid_data;
+signal data_from_r     : grid_data;
+signal data_from_up    : grid_data;
+signal data_to_up      : grid_data;
+signal we_from_r       : std_logic_vector(num_PE-1 downto 0);
+signal we_from_up      : std_logic_vector(num_PE-1 downto 0);
+signal we_to_up        : std_logic_vector(num_PE-1 downto 0);
+signal address_from_up : grid_add;
+signal address_to_up   : grid_add;
 signal done_int    : std_logic_vector(num_PE-1 downto 0);	
 begin
 
@@ -44,12 +49,10 @@ cores:  for i in 0 to num_PE-1 generate
 				data_to_r	 => data_to_r(i),
 				we_from_r	 => we_from_r(i),
 				data_from_r  => data_from_r(i),
-				we_from_up	 => we_from_up,
-				we_to_up	 => we_to_up,
-				address_in	 => address_in,
-				address_out	 => address_out,
-				data_from_up => data_from_up,
-				data_to_up   => data_to_up
+				we_from_up	 => we_from_up(i),
+				we_to_up	 => we_to_up(i),
+				address_in	 => address_from_up(i),
+				address_out	 => address_to_up(i),
 				);
 				
 				connections_cent1 : if i/=0 and i/=(num_PE-1)  generate	
@@ -59,7 +62,7 @@ cores:  for i in 0 to num_PE-1 generate
 				end generate connections_cent1;									
 						
 				left_borderline : if i= 0 generate
-					data_from_l(i) <= (others => '0');
+					data_from_l(i) <= data_in;
 					data_from_r(i) <= data_to_l(i+1);
 					we_from_r(i)   <= we_to_l(i+1)	;
 				end generate left_borderline;
