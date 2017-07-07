@@ -22,10 +22,9 @@ architecture TEST of TB_ASIC_OddEven is
     signal done		    : std_logic;
     signal address_in   : std_logic_vector(address_length-1 downto 0);
     signal address_out  : std_logic_vector(address_length-1 downto 0);
-    signal data_to_up   : std_logic_vector(data_length-1 downto 0);
-    signal data_from_up : std_logic_vector(data_length-1 downto 0):=(others => '0');
-    signal we_from_up   : std_logic;
-    signal we_to_up   : std_logic;
+    signal data_in      : std_logic_vector(data_length-1 downto 0);
+    signal data_out     : std_logic_vector(data_length-1 downto 0):=(others => '0');
+    signal we_in        : std_logic;
     
 	begin
 		
@@ -44,19 +43,19 @@ begin
 	wait for clk_period; 	
 	rst				<= '0';
 	wait for clk_period; 
-	we_from_up <= '1';
+	we_in <= '1';
 	
     address_in   <= conv_std_logic_vector(4, address_length);
-	data_from_up <= conv_std_logic_vector(103, data_length);
+	data_in <= conv_std_logic_vector(103, data_length);
 	wait for clk_period; 
 	address_in   <= conv_std_logic_vector(3, address_length);
-	data_from_up <= conv_std_logic_vector(25, data_length);
+	data_in <= conv_std_logic_vector(25, data_length);
 	wait for clk_period; 
 	address_in   <= conv_std_logic_vector(2, address_length);
-	data_from_up <= conv_std_logic_vector(33, data_length);
+	data_in <= conv_std_logic_vector(33, data_length);
 	wait for clk_period; 
 	address_in   <= conv_std_logic_vector(1, address_length);
-	data_from_up <= conv_std_logic_vector(2, data_length);	
+	data_in <= conv_std_logic_vector(2, data_length);	
 --	wait for clk_period; 
 --	data_from_up <= conv_std_logic_vector(103, data_length);
 --	wait for clk_period; 
@@ -93,12 +92,23 @@ begin
 --	data_from_up(30) <= conv_std_logic_vector(1, data_length);
 --	data_from_up(31) <= conv_std_logic_vector(253, data_length);
 	wait for clk_period;
-	we_from_up <=  '0';
-	wait for clk_period;
+	we_in <=  '0';
+	wait for num_PE*clk_period;
 	start	<= '1';
 	wait;
 end process;
 
 	DUT : entity work.ASIC_OddEven
-		port map( clk, rst, start, done, address_in ,address_out, data_to_up, data_from_up, we_from_up, we_to_up);	
+		port map( 
+				clk  ,        
+				rst 	,	 
+				start   	, 
+				done		 , 
+				address_in	 ,
+				address_out	 ,
+				data_in      ,
+				data_out     ,
+				we_in
+				);	     
+		
 end architecture;
