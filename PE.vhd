@@ -13,8 +13,10 @@ entity PE is
 			done		 : out std_logic;
 			we_to_l      : out std_logic;
 			data_to_l    : out std_logic_vector(data_length-1 downto 0);
-			we_from_l	 : in std_logic;
 			data_from_l  : in std_logic_vector(data_length-1 downto 0);
+			data_to_r    : out std_logic_vector(data_length-1 downto 0);
+			we_from_r	 : in std_logic;
+			data_from_r  : in std_logic_vector(data_length-1 downto 0);
 			we_from_up	 : in std_logic;
 			data_from_up : in std_logic_vector(data_length-1 downto 0);
 			data_to_up   : out std_logic_vector(data_length-1 downto 0)
@@ -32,7 +34,7 @@ begin
 data_to_up <= my_data;
 done <= '1' when (cycles_counter = num_of_cycles) else '0'; -- End of the algorithm		
 
-process(clk, rst, we_from_up, we_from_l)
+process(clk, rst, we_from_up, we_from_r)
 begin
 	if rst = '1' then
 		my_data <= (others => '0');
@@ -42,13 +44,15 @@ begin
 		wait_odd  <= '1';			
 	elsif rising_edge(clk) then				
         if we_from_up ='1' then
-	    	my_data <= data_from_up; 
+	    	my_data <= data_from_up;
+	    	
+	    --Starting the algo	
 	    elsif start = '1' then 
 	    cycles_counter <= cycles_counter+1;
 		if parity = 0 then
 			if wait_even = '0' then
 				-- if left is bigger than me => swap
-				if  (we_from_l = '1' and to_integer(signed(data_from_l)) >= to_integer(signed(my_data))) then
+				if  (to_integer(signed(data_from_l)) >= to_integer(signed(my_data))) then
 					my_data <= data_from_l;
 					data_to_l <= my_data;
 					we_to_l <= '1';
@@ -57,9 +61,13 @@ begin
 					data_to_l <= (others => '0');
 					we_to_l <= '0';
 				end if;
+				data_to_r <= (others => '0');
 				wait_even <= '1';
 			elsif wait_even = '1' then
-				my_data <= my_data;
+				if  (we_from_r = '1') then
+					my_data <= data_from_r;
+				end if;
+				data_to_r <= my_data;
 				data_to_l <= (others => '0');
 				we_to_l <= '0';
 				wait_even <= '0';
@@ -67,13 +75,16 @@ begin
 				
 		elsif parity = 1 then
 			if wait_odd = '0' then
-				my_data <= my_data;
+				if  (we_from_r = '1') then
+					my_data <= data_from_r;
+				end if;
+				data_to_r <= my_data;
 				data_to_l <= (others => '0');
 				we_to_l <= '0';
 				wait_odd <= '1';				
 			elsif wait_odd = '1' then
 				-- if left is bigger than me => swap
-				if  (we_from_l = '1' and to_integer(signed(data_from_l)) >= to_integer(signed(my_data))) then
+				if  (to_integer(signed(data_from_l)) >= to_integer(signed(my_data))) then
 					my_data <= data_from_l;
 					data_to_l <= my_data;
 					we_to_l <= '1';

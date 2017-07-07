@@ -20,7 +20,9 @@ architecture Behavioral of ASIC_OddEven is
 signal data_to_l   : grid_data;
 signal we_to_l     : std_logic_vector(num_PE-1 downto 0);
 signal data_from_l : grid_data;
-signal we_from_l   : std_logic_vector(num_PE-1 downto 0);
+signal data_to_r   : grid_data;
+signal data_from_r : grid_data;
+signal we_from_r   : std_logic_vector(num_PE-1 downto 0);
 signal done_int    : std_logic_vector(num_PE-1 downto 0);	
 begin
 
@@ -36,11 +38,31 @@ cores:  for i in 0 to num_PE-1 generate
 				done		 => done_int(i), 
 				we_to_l      => we_to_l(i),
 				data_to_l    => data_to_l(i),
-				we_from_l	 => we_from_l(i),
 				data_from_l  => data_from_l(i),
+				data_to_r	 => data_to_r(i),
+				we_from_r	 => we_from_r(i),
+				data_from_r  => data_from_r(i),
 				we_from_up	 => we_from_up(i),
 				data_from_up => data_from_up(i),
 				data_to_up   => data_to_up(i)
 				);
+				
+				connections_cent : if NOT( i= 0 or i=(num_PE-1)) generate	
+					data_from_l(i) <= data_to_r(i-1) ;
+					data_from_r(i-1) <= data_to_l(i);
+					we_from_r(i-1)   <= we_to_l(i)	;
+				end generate connections_cent;						
+						
+				left_borderline : if i= 0 generate
+					data_from_l(i) <= (others => '0');
+					data_from_r(i) <= data_to_l(i);
+					we_from_r(i)   <= we_to_l(i)	;
+				end generate left_borderline;
+				
+				right_borderline : if i=(num_PE-1) generate	
+					data_from_l(i) <= data_to_r(i-1) ;
+					data_from_r(i) <= (others => '0');
+					we_from_r(i)   <= '0';
+				end generate right_borderline;	
 end generate cores;
 end Behavioral;
