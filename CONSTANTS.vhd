@@ -3,7 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 package CONSTANTS is
 
-constant num_PE					: integer := 64; 
+constant num_PE					: integer := 2**6; 
 
 constant algo_length			: integer := 2*num_PE; 
 constant position_length		: integer := 10; 

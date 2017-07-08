@@ -30,7 +30,6 @@ done <= and_reduce(done_int);
 
 cores:  for i in 0 to num_PE-1 generate
 		pe_i:entity work.PE
-			generic map ( 0 )--i mod 2)
 			Port map(
 				clk			 => clk,
 				rst			 => rst,
