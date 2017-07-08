@@ -20,7 +20,6 @@ architecture TEST of TB_ASIC_OddEven is
     signal start   	    : std_logic:='0';
     signal done		    : std_logic;
     signal address_in   : std_logic_vector(address_length-1 downto 0);
-    signal address_out  : std_logic_vector(address_length-1 downto 0);
     signal data_in      : std_logic_vector(data_length-1 downto 0);
     signal data_out     : std_logic_vector(data_length-1 downto 0):=(others => '0');
     signal we_in        : std_logic;
@@ -44,16 +43,16 @@ begin
 	wait for clk_period; 
 	we_in <= '1';
 	
-    address_in   <= conv_std_logic_vector(4, address_length);
+    address_in   <= conv_std_logic_vector(3, address_length);
 	data_in <= conv_std_logic_vector(103, data_length);
 	wait for clk_period; 
-	address_in   <= conv_std_logic_vector(3, address_length);
+	address_in   <= conv_std_logic_vector(2, address_length);
 	data_in <= conv_std_logic_vector(25, data_length);
 	wait for clk_period; 
-	address_in   <= conv_std_logic_vector(2, address_length);
+	address_in   <= conv_std_logic_vector(1, address_length);
 	data_in <= conv_std_logic_vector(33, data_length);
 	wait for clk_period; 
-	address_in   <= conv_std_logic_vector(1, address_length);
+	address_in   <= conv_std_logic_vector(0, address_length);
 	data_in <= conv_std_logic_vector(2, data_length);	
 --	wait for clk_period; 
 --	data_from_up <= conv_std_logic_vector(103, data_length);
@@ -104,7 +103,6 @@ end process;
 				start   	, 
 				done		 , 
 				address_in	 ,
-				address_out	 ,
 				data_in      ,
 				data_out     ,
 				we_in

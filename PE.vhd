@@ -17,11 +17,10 @@ entity PE is
 			we_from_r	 : in std_logic;
 			data_from_r  : in std_logic_vector(data_length-1 downto 0);
 			we_in    	 : in std_logic;
-			we_out   	 : out std_logic;
 			address_in	 : in std_logic_vector(address_length-1 downto 0 );
-			address_out  : out std_logic_vector(address_length-1 downto 0 );
+			my_add       : in std_logic_vector(address_length-1 downto 0 );
 			data_in		 : in std_logic_vector(data_length-1 downto 0);
-			data_out     : out std_logic_vector(data_length-1 downto 0)
+			data_out	 : out std_logic_vector(data_length-1 downto 0)
 	 );
 end PE;
 
@@ -44,23 +43,18 @@ begin
 		done <= '0';
 	elsif rising_edge(clk) then	
 		if we_in ='1' and start = '0' then
-			we_out <= we_in;
-			data_out  <= data_in;
-			if unsigned(address_in) /= 0 then
-				address_out <= std_logic_vector(signed(address_in)-1); 
-			else 
-				address_out <= (others => '0');
-				data_out	<= my_data;
-			end if;
-        	if unsigned(address_in) = 1 then 
-	    		my_data <= data_in;
+        	if address_in = my_add then 
+	    		my_data <= data_in; 		
 	    		cycles_counter <= 0;
 	    	end if;
-	    	
 	    --Starting the algo	
-	    elsif we_in ='0' and start = '1' then 
+	    elsif we_in ='0' and start = '0' then
+	    	data_out <= my_data;
+	    elsif start = '1' then 
 	    if  (cycles_counter = algo_length) then
-	    	done <= '1'; -- End of the algorithms
+	    	done <= '1'; -- End of the algorithms	
+	    else
+	    	done <= '0';
 	    end if;	
 	    cycles_counter <= cycles_counter+1;	
 		if state = '0' then
