@@ -82,6 +82,42 @@ begin
 	data_from_up(29) <= conv_std_logic_vector(239, data_length);
 	data_from_up(30) <= conv_std_logic_vector(1, data_length);
 	data_from_up(31) <= conv_std_logic_vector(253, data_length);
+	
+	data_from_up(32) <= conv_std_logic_vector(62, data_length);
+	data_from_up(33) <= conv_std_logic_vector(62, data_length);
+	data_from_up(34) <= conv_std_logic_vector(62, data_length);
+	data_from_up(35) <= conv_std_logic_vector(87, data_length);	
+	data_from_up(36) <= conv_std_logic_vector(103, data_length);
+	data_from_up(37) <= conv_std_logic_vector(109, data_length);
+	data_from_up(38) <= conv_std_logic_vector(144, data_length);
+	data_from_up(39) <= conv_std_logic_vector(100, data_length);	
+	
+	data_from_up(40) <= conv_std_logic_vector(99, data_length);
+	data_from_up(41) <= conv_std_logic_vector(98, data_length);
+	data_from_up(42) <= conv_std_logic_vector(195, data_length);
+	data_from_up(43) <= conv_std_logic_vector(77, data_length);	
+	data_from_up(44) <= conv_std_logic_vector(119, data_length);
+	data_from_up(45) <= conv_std_logic_vector(8, data_length);
+	data_from_up(46) <= conv_std_logic_vector(4, data_length);
+	data_from_up(47) <= conv_std_logic_vector(20, data_length);
+	
+	data_from_up(48) <= conv_std_logic_vector(29, data_length);
+	data_from_up(49) <= conv_std_logic_vector(35, data_length);
+	data_from_up(50) <= conv_std_logic_vector(32, data_length);
+	data_from_up(51) <= conv_std_logic_vector(169, data_length);	
+	data_from_up(52) <= conv_std_logic_vector(123, data_length);
+	data_from_up(53) <= conv_std_logic_vector(27, data_length);
+	data_from_up(54) <= conv_std_logic_vector(244, data_length);
+	data_from_up(55) <= conv_std_logic_vector(246, data_length);	
+	
+	data_from_up(56) <= conv_std_logic_vector(3, data_length);
+	data_from_up(57) <= conv_std_logic_vector(72, data_length);
+	data_from_up(58) <= conv_std_logic_vector(60, data_length);
+	data_from_up(59) <= conv_std_logic_vector(88, data_length);	
+	data_from_up(60) <= conv_std_logic_vector(9, data_length);
+	data_from_up(61) <= conv_std_logic_vector(239, data_length);
+	data_from_up(62) <= conv_std_logic_vector(222, data_length);
+	data_from_up(63) <= conv_std_logic_vector(254, data_length);	
 	wait for clk_period;
 	we_from_up <= (others => '0');
 	wait for clk_period;

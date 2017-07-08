@@ -49,7 +49,7 @@ begin
 	    	cycles_counter <= 0;
 	    --Starting the algo	
 	    elsif start = '1' then 
-	    if  (cycles_counter = num_PE) then
+	    if  (cycles_counter = algo_length) then
 	    	done <= '1'; -- End of the algorithms
 	    else
 	    	done <= '0';
